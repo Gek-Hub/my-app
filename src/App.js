@@ -1,15 +1,14 @@
 import { useState } from "react";
 import React from "react";
+import Counter from "./components/Counter";
 
 function App() {
-  const [count, setCount] = useState(0);
-  console.log(count)
-  console.log(setCount)
+  const [value, setValue] = useState('прикол')
+  
+  
   return (
-    <div className="App">
-    {/* <h1>likes: {likes}</h1>
-      <button onClick={Like}>Like</button>
-      <button onClick={Dislike}>Dislike</button> */}
+    <div className="App"> 
+      <Counter/>
     </div>
   );
 }
