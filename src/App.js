@@ -6,26 +6,26 @@ import Butt1 from "./components/UI/button/Butt1";
 import Input1 from "./components/UI/input/Input1";
 import PostForm from "./components/PostForm";
 import Select1 from "./components/UI/select/Select1";
-
+import PostFilter from "./components/PostFilter";
+import Modal1 from "./components/UI/modal/Modal1";
 function App() {  
   const [post, setPost] = useState([
     { id: 1, title: "JAVASCRIPT", body: "holy shit"},
     { id: 2, title: "ASCRIPT", body: "shit"},
     { id: 3, title: "RIPT", body: "shitest shit"},
   ]);
-  const [selectedSort, setSelectedSort] = useState('') 
-  const [searchQuary, setSearchQuary] = useState('')
+  const [filter, setFilter] = useState({sort: '',query: ''})
 
   const sortedPosts = useMemo(() => {
     console.log('CРАБОТАЛА ФУНКЦИЯ СОРТЕД ПОСТС');
-    if (selectedSort) {
-      return [...post].sort((a,b) => a[selectedSort].localeCompare(b[selectedSort]))
+    if (filter.sort) {
+      return [...post].sort((a,b) => a[filter.sort].localeCompare(b[filter.sort]))
     }
     return post
-  }, [selectedSort,post]);
+  }, [filter.sort,post]);
   const sortedAndSearchedPosts = useMemo(() => {
-    return sortedPosts.filter(post => post.title.toLowerCase().includes(searchQuary.toLowerCase()))
-  }, [searchQuary,sortedPosts]);
+    return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
+  }, [filter.query,sortedPosts]);
   const createPost = (newPost) => {
     setPost([...post, newPost])
   }
@@ -33,38 +33,18 @@ function App() {
   const deletePost = (p) => {
     setPost(post.filter(i =>  i.id !== p.id))
   }
-  const sortPosts = (sort) => {
-    setSelectedSort(sort);
-    setPost([...post].sort((a,b) => a[sort].localeCompare(b[sort])))  
-  }
   return (
     <div className="App">
-      <PostForm create={createPost}/>
+      <Modal1 >
+        <PostForm create={createPost}/>
+      </Modal1>
       <hr style={{margin: '15px 0'}}/>
-      <div>
-        <Input1 
-          onChange={e => setSearchQuary(e.target.value)}
-          value={searchQuary}
-          placeholder=' Поиск...'
-        />
-        <Select1
-          onChange={sortPosts}
-          value={selectedSort}
-          defaultOption='Сортировка по:'
-          options={[
-            {value: 'title', name: 'По названию'},
-            {value: 'body', name: 'По описанию'}
-          ]}
-        />
-      </div>
-      {sortedAndSearchedPosts.length 
-        ? 
-        <PostList deletePost={deletePost} post={sortedAndSearchedPosts} title="Посты про JS"/>
-        : 
-        <h1 style={{textAlign: 'center'}}>
-          Посты не найдены!
-        </h1>
-      }
+      <PostFilter 
+        filter={filter}
+        setFilter={setFilter}
+      />
+      <PostList deletePost={deletePost} post={sortedAndSearchedPosts} title="Посты про JS"/>
+        
     </div>
   );
 }

@@ -1,8 +1,9 @@
 .btn1 {
     padding: 5px 15px;
-    color: cornflowerblue;
+    color: rgb(65, 101, 219);
     font-size: 14px;
     background: transparent;
-    border: 1px solid rgb(190, 203, 54);
+    border: 2px solid rgb(109, 109, 109);
+    border-radius: 10px;
     cursor: pointer;
 }

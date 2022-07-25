@@ -8,11 +8,14 @@ const PostForm = (props) => {
     const [addPost, setAddPost] = useState({title:'',body:''})
     const createPost = (e) => {
         e.preventDefault()
-        const newPost = {
-            ...addPost, id:Date.now()
+        if (addPost.title) {
+            const newPost = {
+                ...addPost, id:Date.now()
+            }
+            props.create(newPost)
+            setAddPost({...addPost,title:'',body:''})
         }
-        props.create(newPost)
-        setAddPost({...addPost,title:'',body:''})
+        
     }
     return (
     <div>
